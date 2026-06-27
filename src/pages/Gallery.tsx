@@ -29,11 +29,11 @@ export default function Gallery() {
     <div className="gallery">
       <div className="gal-top">
         <div className="gal-brand">
-          OMAKASE
-          <span className="jp">おまかせ</span>
+          MASSE
+          <span className="jp">マッス</span>
         </div>
         <div className="gal-meta">
-          Pose Atari Studio
+          Figure Atari Studio
           <br />
           {fmtDate(Date.now())}
         </div>
@@ -117,7 +117,7 @@ export default function Gallery() {
       </div>
 
       <div className="gal-footer">
-        <span>Omakase — Pose Atari Studio</span>
+        <span>Masse — Figure Atari Studio</span>
         <span>React · Konva · {new Date().getFullYear()}</span>
       </div>
     </div>

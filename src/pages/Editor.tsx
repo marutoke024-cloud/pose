@@ -4,7 +4,8 @@ import { Stage, Layer, Image as KonvaImage, Transformer } from 'react-konva'
 import type Konva from 'konva'
 import BodyPartShape from '../components/BodyPartShape'
 import PartThumb from '../components/PartThumb'
-import { PART_DEFS, FULL_BODY_PRESET } from '../parts/shapes'
+import { PART_DEFS, buildFigure } from '../parts/shapes'
+import type { Skeleton } from '../parts/shapes'
 import type { PartInstance, PartKind, SavedWork } from '../types'
 import { getWork, saveWork, uid } from '../lib/storage'
 
@@ -20,6 +21,7 @@ export default function Editor() {
   const [parts, setParts] = useState<PartInstance[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [partsOpacity, setPartsOpacity] = useState(0.55)
+  const [skeleton, setSkeleton] = useState<Skeleton>('masculine')
 
   const [refImg, setRefImg] = useState<HTMLImageElement | null>(null)
   const [refOpacity, setRefOpacity] = useState(0.6)
@@ -111,19 +113,19 @@ export default function Editor() {
   const addPreset = useCallback(() => {
     setParts((prev) => [
       ...prev,
-      ...FULL_BODY_PRESET.map((p) => ({
+      ...buildFigure(skeleton).map((p) => ({
         id: uid(),
         kind: p.kind,
         x: p.x,
         y: p.y,
         rotation: p.rotation ?? 0,
-        scaleX: (p.scale ?? 1) * (p.scaleX ?? 1),
-        scaleY: p.scale ?? 1,
+        scaleX: p.sx ?? 1,
+        scaleY: p.sy ?? 1,
       })),
     ])
     setSelectedId(null)
-    showToast('Figure added')
-  }, [showToast])
+    showToast(`${skeleton === 'feminine' ? 'Feminine' : 'Masculine'} figure added`)
+  }, [showToast, skeleton])
 
   const selected = useMemo(() => parts.find((p) => p.id === selectedId), [parts, selectedId])
 
@@ -274,7 +276,7 @@ export default function Editor() {
     <div className="editor">
       <header className="ed-header">
         <button className="ed-back" onClick={() => navigate('/')} title="Back to gallery">
-          ← OMAKASE
+          ← MASSE
         </button>
         <input
           className="ed-title-input"
@@ -323,9 +325,26 @@ export default function Editor() {
               </button>
             ))}
           </div>
-          <button className="btn ghost tray-preset" onClick={addPreset}>
-            + Full figure
-          </button>
+          <div className="tray-figure">
+            <h3>Figure</h3>
+            <div className="seg" role="group" aria-label="Skeleton type">
+              <button
+                className={skeleton === 'masculine' ? 'active' : ''}
+                onClick={() => setSkeleton('masculine')}
+              >
+                Masculine
+              </button>
+              <button
+                className={skeleton === 'feminine' ? 'active' : ''}
+                onClick={() => setSkeleton('feminine')}
+              >
+                Feminine
+              </button>
+            </div>
+            <button className="btn ghost tray-preset" onClick={addPreset}>
+              + Add full figure
+            </button>
+          </div>
         </aside>
 
         <div className="stage-wrap" ref={wrapRef}>
@@ -339,6 +358,7 @@ export default function Editor() {
               height={BOARD_H * scale}
               scaleX={scale}
               scaleY={scale}
+              style={{ touchAction: 'none' }}
               onMouseDown={deselectOnEmpty}
               onTouchStart={deselectOnEmpty}
             >
@@ -396,13 +416,15 @@ export default function Editor() {
                     'bottom-left',
                     'bottom-right',
                   ]}
-                  anchorStroke="#0a0a0b"
+                  anchorStroke="#16161a"
                   anchorFill="#e8e6df"
-                  anchorSize={10}
-                  anchorCornerRadius={5}
+                  anchorStrokeWidth={2}
+                  // larger handles + bigger touch hit area for Apple Pencil / finger
+                  anchorSize={Math.max(16, 18 / scale)}
+                  anchorCornerRadius={8}
                   borderStroke="#e8e6df"
-                  borderStrokeWidth={1}
-                  rotateAnchorOffset={26}
+                  borderStrokeWidth={1.5}
+                  rotateAnchorOffset={Math.max(34, 40 / scale)}
                   ignoreStroke
                 />
               </Layer>

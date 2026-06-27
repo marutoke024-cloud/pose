@@ -1,4 +1,4 @@
-# おまかせ — OMAKASE · Pose Atari Studio
+# MASSE · マッス — Figure Atari Studio
 
 A minimal, web-based **2D mannequin layout editor** for quickly blocking out the
 *atari* (アタリ / rough underlay) of an illustration.
@@ -17,7 +17,10 @@ to drop into Clip Studio Paint (or anything else) as an underlay layer.
 - **Animated moodboard gallery** as the home page — your saved works as a
   minimal, motion-driven thumbnail board.
 - **Parts tray** — add head, neck, torso, pelvis, upper arm, forearm, hand,
-  thigh, shin, foot, or a ready-made **full figure** preset.
+  thigh, shin, foot, or a ready-made **full figure** preset with a
+  **masculine / feminine skeleton** toggle.
+- **Tuned for iPad Air + Apple Pencil** — large transform handles, no gesture
+  hijacking, installable to the home screen.
 - **Per-part transform** — move, scale (corner handles), rotate (top handle),
   flip H/V, duplicate, delete, bring to front / send to back.
 - **Reference underlay** — load any JPG/PNG, adjust its opacity, show/hide it.

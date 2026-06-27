@@ -1,0 +1,16 @@
+{
+  "name": "Masse — Figure Atari Studio",
+  "short_name": "Masse",
+  "description": "Block out figure poses with semi-transparent mannequin masses and export a transparent atari underlay.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1b1b1e",
+  "theme_color": "#1b1b1e",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

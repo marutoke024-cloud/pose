@@ -119,29 +119,61 @@ export interface PresetPart {
   x: number
   y: number
   rotation?: number
-  scaleX?: number
-  scale?: number
+  /** full konva scale incl. sign (negative = mirrored) */
+  sx?: number
+  sy?: number
 }
 
-export const FULL_BODY_PRESET: PresetPart[] = [
+export type Skeleton = 'masculine' | 'feminine'
+
+/**
+ * Masculine build: broad shoulders / ribcage, narrow hips.
+ * Feminine build: narrower shoulders & ribcage, wider pelvis, slimmer limbs.
+ */
+const MASCULINE: PresetPart[] = [
   { kind: 'head', x: 450, y: 250 },
   { kind: 'neck', x: 450, y: 312 },
-  { kind: 'torso', x: 450, y: 430 },
-  { kind: 'pelvis', x: 450, y: 580 },
+  { kind: 'torso', x: 450, y: 430, sx: 1.04 },
+  { kind: 'pelvis', x: 450, y: 582, sx: 0.96 },
   // left arm (viewer left)
-  { kind: 'upperArm', x: 360, y: 440, rotation: 8 },
-  { kind: 'forearm', x: 348, y: 575, rotation: 4 },
-  { kind: 'hand', x: 344, y: 670 },
+  { kind: 'upperArm', x: 358, y: 440, rotation: 8 },
+  { kind: 'forearm', x: 346, y: 575, rotation: 4 },
+  { kind: 'hand', x: 342, y: 670 },
   // right arm
-  { kind: 'upperArm', x: 540, y: 440, rotation: -8, scaleX: -1 },
-  { kind: 'forearm', x: 552, y: 575, rotation: -4, scaleX: -1 },
-  { kind: 'hand', x: 556, y: 670, scaleX: -1 },
+  { kind: 'upperArm', x: 542, y: 440, rotation: -8, sx: -1 },
+  { kind: 'forearm', x: 554, y: 575, rotation: -4, sx: -1 },
+  { kind: 'hand', x: 558, y: 670, sx: -1 },
   // left leg
   { kind: 'thigh', x: 405, y: 730, rotation: 4 },
   { kind: 'shin', x: 398, y: 910, rotation: 2 },
   { kind: 'foot', x: 394, y: 1020 },
   // right leg
-  { kind: 'thigh', x: 495, y: 730, rotation: -4, scaleX: -1 },
-  { kind: 'shin', x: 502, y: 910, rotation: -2, scaleX: -1 },
-  { kind: 'foot', x: 506, y: 1020, scaleX: -1 },
+  { kind: 'thigh', x: 495, y: 730, rotation: -4, sx: -1 },
+  { kind: 'shin', x: 502, y: 910, rotation: -2, sx: -1 },
+  { kind: 'foot', x: 506, y: 1020, sx: -1 },
 ]
+
+const FEMININE: PresetPart[] = [
+  { kind: 'head', x: 450, y: 256, sx: 0.95, sy: 0.95 },
+  { kind: 'neck', x: 450, y: 314, sx: 0.88, sy: 0.9 },
+  { kind: 'torso', x: 450, y: 434, sx: 0.85, sy: 0.92 },
+  { kind: 'pelvis', x: 450, y: 578, sx: 1.14, sy: 0.96 },
+  // narrower shoulders → arms tuck closer in
+  { kind: 'upperArm', x: 372, y: 442, rotation: 10, sx: 0.9, sy: 0.94 },
+  { kind: 'forearm', x: 360, y: 572, rotation: 5, sx: 0.9, sy: 0.94 },
+  { kind: 'hand', x: 356, y: 664, sx: 0.92, sy: 0.92 },
+  { kind: 'upperArm', x: 528, y: 442, rotation: -10, sx: -0.9, sy: 0.94 },
+  { kind: 'forearm', x: 540, y: 572, rotation: -5, sx: -0.9, sy: 0.94 },
+  { kind: 'hand', x: 544, y: 664, sx: -0.92, sy: 0.92 },
+  // wider hips → thighs set further apart
+  { kind: 'thigh', x: 414, y: 728, rotation: 6, sx: 0.94 },
+  { kind: 'shin', x: 404, y: 910, rotation: 2, sx: 0.92 },
+  { kind: 'foot', x: 400, y: 1018, sx: 0.92, sy: 0.96 },
+  { kind: 'thigh', x: 486, y: 728, rotation: -6, sx: -0.94 },
+  { kind: 'shin', x: 496, y: 910, rotation: -2, sx: -0.92 },
+  { kind: 'foot', x: 500, y: 1018, sx: -0.92, sy: 0.96 },
+]
+
+export function buildFigure(variant: Skeleton): PresetPart[] {
+  return variant === 'feminine' ? FEMININE : MASCULINE
+}

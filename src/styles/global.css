@@ -1,14 +1,14 @@
 :root {
-  --bg: #0a0a0b;
-  --bg-soft: #111113;
-  --bg-elev: #161618;
-  --line: #232327;
-  --line-soft: #1b1b1e;
+  --bg: #1b1b1e;
+  --bg-soft: #212125;
+  --bg-elev: #292930;
+  --line: #3a3a42;
+  --line-soft: #2c2c33;
   --fg: #f4f4f2;
-  --fg-dim: #8a8a90;
-  --fg-faint: #56565c;
+  --fg-dim: #9a9aa2;
+  --fg-faint: #6a6a72;
   --accent: #e8e6df;
-  --accent-ink: #0a0a0b;
+  --accent-ink: #16161a;
   --radius: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-display: 'Space Grotesk', system-ui, sans-serif;
@@ -34,6 +34,25 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+/* Apple Pencil / touch: avoid accidental text selection, callouts and gesture hijacking */
+.editor {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.editor button {
+  touch-action: manipulation;
+}
+.artboard,
+.artboard canvas {
+  touch-action: none;
+}
+.ed-title-input {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 button {
@@ -93,9 +112,10 @@ a {
 }
 .btn.icon {
   padding: 9px;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   justify-content: center;
+  font-size: 15px;
 }
 .btn:disabled {
   opacity: 0.4;
@@ -237,7 +257,7 @@ a {
   aspect-ratio: 3 / 4;
   border-radius: var(--radius);
   border: 1px solid var(--line-soft);
-  background: linear-gradient(160deg, #141416, #0e0e10);
+  background: linear-gradient(160deg, #26262b, #1d1d21);
   overflow: hidden;
   cursor: pointer;
   opacity: 0;
@@ -510,9 +530,37 @@ a {
   color: var(--fg-dim);
 }
 .tray-preset {
-  margin-top: 14px;
+  margin-top: 10px;
   width: 100%;
   justify-content: center;
+}
+
+.tray-figure {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.seg {
+  display: flex;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 3px;
+}
+.seg button {
+  flex: 1;
+  padding: 7px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.seg button.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
 }
 
 /* stage area */
@@ -523,8 +571,9 @@ a {
   place-items: center;
   padding: 22px;
   background:
-    radial-gradient(80% 60% at 50% 30%, #161618, var(--bg) 75%);
+    radial-gradient(80% 60% at 50% 30%, #26262c, var(--bg) 75%);
   overflow: hidden;
+  touch-action: none;
 }
 .artboard {
   position: relative;

@@ -1,0 +1,19 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="116" fill="#202024"/>
+  <rect x="1.5" y="1.5" width="509" height="509" rx="114.5" stroke="#3a3a42" stroke-width="3"/>
+  <!-- massed figure: head + tapered torso, overlapping like stacked mannequin masses -->
+  <g fill="#e8e6df">
+    <!-- torso mass (rounded tapered trapezoid) -->
+    <path d="M168 250
+             a78 78 0 0 1 78 -78 h20
+             a78 78 0 0 1 78 78
+             l16 132
+             a64 64 0 0 1 -64 70 h-80
+             a64 64 0 0 1 -64 -70 z" opacity="0.55"/>
+    <!-- head (egg) -->
+    <ellipse cx="256" cy="150" rx="62" ry="74" opacity="0.85"/>
+    <!-- shoulder joints -->
+    <circle cx="176" cy="252" r="40" opacity="0.5"/>
+    <circle cx="336" cy="252" r="40" opacity="0.5"/>
+  </g>
+</svg>
