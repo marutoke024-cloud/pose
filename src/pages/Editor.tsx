@@ -125,7 +125,7 @@ export default function Editor() {
       tr.getLayer()?.batchDraw()
       return
     }
-    const node = layer.findOne<Konva.Shape>(`#${selectedId}`)
+    const node = layer.findOne<Konva.Node>(`#${selectedId}`)
     tr.nodes(node ? [node] : [])
     tr.getLayer()?.batchDraw()
   }, [selectedId, parts])
@@ -301,7 +301,7 @@ export default function Editor() {
       const url = stage.toDataURL({ pixelRatio, mimeType: 'image/png' })
       if (!includeRef) refLayer?.visible(refWasVisible)
       if (selectedId) {
-        const node = partsLayerRef.current?.findOne<Konva.Shape>(`#${selectedId}`)
+        const node = partsLayerRef.current?.findOne<Konva.Node>(`#${selectedId}`)
         if (node) tr?.nodes([node])
       }
       stage.batchDraw()
@@ -478,6 +478,7 @@ export default function Editor() {
                 {parts.map((p) => (
                   <BodyPartShape
                     key={p.id}
+                    id={p.id}
                     kind={p.kind}
                     variant={p.variant ?? 'masculine'}
                     x={p.x}
@@ -487,13 +488,11 @@ export default function Editor() {
                     scaleY={p.scaleY}
                     opacity={partsOpacity}
                     draggable
-                    // @ts-expect-error konva id passthrough
-                    id={p.id}
                     onClick={() => setSelectedId(p.id)}
                     onTap={() => setSelectedId(p.id)}
                     onDragEnd={(e) => update(p.id, { x: e.target.x(), y: e.target.y() })}
                     onTransformEnd={(e) => {
-                      const n = e.target as Konva.Shape
+                      const n = e.target as Konva.Node
                       update(p.id, {
                         x: n.x(),
                         y: n.y(),
