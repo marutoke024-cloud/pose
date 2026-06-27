@@ -9,7 +9,10 @@ import {
 } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Stage, Layer, Image as KonvaImage, Transformer } from 'react-konva'
-import type Konva from 'konva'
+import Konva from 'konva'
+
+// Detect what's under the pointer during drags — needed for reliable touch dragging.
+Konva.hitOnDragEnabled = true
 import BodyPartShape from '../components/BodyPartShape'
 import PartThumb from '../components/PartThumb'
 import { BASE_KINDS, FEMININE_EXTRA_KINDS, buildFigure, getPartDef } from '../parts/shapes'
@@ -344,6 +347,9 @@ export default function Editor() {
     showToast('Saved to gallery')
   }
 
+  // Deselect when the empty stage background is clicked/tapped. Using click/tap
+  // (fires on release without a drag) instead of mousedown/touchstart avoids
+  // firing mid-gesture, which on touch could interrupt drags / wedge the stage.
   const deselectOnEmpty = (e: Konva.KonvaEventObject<MouseEvent | TouchEvent>) => {
     if (e.target === e.target.getStage()) setSelectedId(null)
   }
@@ -458,8 +464,8 @@ export default function Editor() {
               scaleX={scale}
               scaleY={scale}
               style={{ touchAction: 'none' }}
-              onMouseDown={deselectOnEmpty}
-              onTouchStart={deselectOnEmpty}
+              onClick={deselectOnEmpty}
+              onTap={deselectOnEmpty}
             >
               <Layer ref={refLayerRef} listening={false} visible={refVisible}>
                 {refRect && refImg && (
@@ -510,25 +516,20 @@ export default function Editor() {
                   // gentle snap at cardinal angles, free rotation otherwise
                   rotationSnaps={[0, 45, 90, 135, 180, 225, 270, 315]}
                   rotationSnapTolerance={4}
-                  enabledAnchors={[
-                    'top-left',
-                    'top-center',
-                    'top-right',
-                    'middle-left',
-                    'middle-right',
-                    'bottom-left',
-                    'bottom-center',
-                    'bottom-right',
-                  ]}
+                  // push the box & handles OUTSIDE the part so the body stays
+                  // free to grab-and-drag (and the rotate handle is reachable),
+                  // which matters most for fingers/Apple Pencil on small parts
+                  padding={Math.max(14, 16 / scale)}
+                  enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
                   anchorStroke="#16161a"
                   anchorFill="#e8e6df"
                   anchorStrokeWidth={2}
-                  // larger handles + bigger touch hit area for Apple Pencil / finger
-                  anchorSize={Math.max(15, 17 / scale)}
+                  anchorSize={Math.max(14, 16 / scale)}
                   anchorCornerRadius={7}
                   borderStroke="#e8e6df"
                   borderStrokeWidth={1.5}
-                  rotateAnchorOffset={Math.max(32, 38 / scale)}
+                  borderDash={[4, 4]}
+                  rotateAnchorOffset={Math.max(30, 34 / scale)}
                   ignoreStroke
                 />
               </Layer>
