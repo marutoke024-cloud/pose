@@ -634,12 +634,17 @@ a {
   color: var(--fg-faint);
   white-space: nowrap;
 }
-.slider .val {
+.slider .val,
+.tool-group .val {
   font-size: 11px;
   color: var(--fg-dim);
   width: 34px;
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+.tool-group .val.deg {
+  width: 42px;
+  text-align: center;
 }
 input[type='range'] {
   -webkit-appearance: none;

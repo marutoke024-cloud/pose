@@ -9,10 +9,15 @@ export type PartKind =
   | 'thigh'
   | 'shin'
   | 'foot'
+  | 'breast'
+
+export type Skeleton = 'masculine' | 'feminine'
 
 export interface PartInstance {
   id: string
   kind: PartKind
+  /** which skeleton this part's silhouette is drawn from */
+  variant: Skeleton
   x: number
   y: number
   rotation: number

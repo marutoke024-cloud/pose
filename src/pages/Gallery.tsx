@@ -28,10 +28,7 @@ export default function Gallery() {
   return (
     <div className="gallery">
       <div className="gal-top">
-        <div className="gal-brand">
-          MASSE
-          <span className="jp">マッス</span>
-        </div>
+        <div className="gal-brand">MASSE</div>
         <div className="gal-meta">
           Figure Atari Studio
           <br />

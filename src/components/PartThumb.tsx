@@ -1,11 +1,19 @@
 import { Stage, Layer } from 'react-konva'
 import BodyPartShape from './BodyPartShape'
-import { PART_BY_KIND } from '../parts/shapes'
-import type { PartKind } from '../types'
+import { getPartDef } from '../parts/shapes'
+import type { PartKind, Skeleton } from '../types'
 
 /** Small static preview of a part, fit into a square box. Used in the parts tray. */
-export default function PartThumb({ kind, size = 60 }: { kind: PartKind; size?: number }) {
-  const def = PART_BY_KIND[kind]
+export default function PartThumb({
+  kind,
+  variant,
+  size = 60,
+}: {
+  kind: PartKind
+  variant: Skeleton
+  size?: number
+}) {
+  const def = getPartDef(kind, variant)
   const pad = 8
   const fit = Math.min((size - pad * 2) / def.bbox.w, (size - pad * 2) / def.bbox.h)
   return (
@@ -13,6 +21,7 @@ export default function PartThumb({ kind, size = 60 }: { kind: PartKind; size?: 
       <Layer>
         <BodyPartShape
           kind={kind}
+          variant={variant}
           x={size / 2}
           y={size / 2}
           scaleX={fit}
